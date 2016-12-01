@@ -70,6 +70,12 @@ export default Route.extend(CanonicalRedirectMixin, CoverPageMixin, {
   },
 
   _headTags(model) {
+    let host;
+    if (get(this, 'fastboot.isFastBoot') === true) {
+      host = `${get(this, 'fastboot.request.protocol')}://${get(this, 'fastboot.request.host')}`;
+    } else {
+      host = `${window.location.protocol}//${window.location.host}`;
+    }
     // TODO - @Josh - Custom description for a user's profile (SEO / Embeds)
     const desc = `Check out ${get(model, 'canonicalTitle')} on Kitsu.`;
     return [{
@@ -98,14 +104,14 @@ export default Route.extend(CanonicalRedirectMixin, CoverPageMixin, {
       tagId: 'meta-og-image',
       attrs: {
         property: 'og:image',
-        content: `${window.location.protocol}//${window.location.host}${image(get(model, 'posterImage'), 'medium')}`
+        content: `${host}${image(get(model, 'posterImage'), 'medium')}`
       }
     }, {
       type: 'meta',
       tagID: 'meta-twitter-image',
       attrs: {
         name: 'twitter:image',
-        content: `${window.location.protocol}//${window.location.host}${image(get(model, 'posterImage'), 'medium')}`
+        content: `${host}${image(get(model, 'posterImage'), 'medium')}`
       }
     }];
   },

@@ -21,11 +21,15 @@ module.exports = function(environment) {
     },
     isStaging: false,
 
+    // fastboot
+    fastboot: {
+      hostWhitelist: ['kitsu.io', 'staging.kitsu.io', /^localhost:\d+$/]
+    },
+
     // ember-simple-auth
     'ember-simple-auth': {
       authenticationRoute: 'dashboard',
-      routeIfAlreadyAuthenticated: 'dashboard',
-      store: 'session-store:adaptive'
+      routeIfAlreadyAuthenticated: 'dashboard'
     },
 
     // torii

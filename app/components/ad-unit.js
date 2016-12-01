@@ -12,12 +12,12 @@ export default Component.extend({
     this._super(...arguments);
     assert('Must pass a `slot` param to an `{{ad-unit}}` component.', get(this, 'slot') !== undefined);
     set(this, 'client', Config.ads.client);
-    // if adsbygoogle is undefined then the script failed to load or was blocked.
-    set(this, 'isEnabled', Config.ads.enabled === true && window.adsbygoogle !== undefined);
   },
 
   didInsertElement() {
     this._super(...arguments);
+    // if adsbygoogle is undefined then the script failed to load or was blocked.
+    set(this, 'isEnabled', Config.ads.enabled === true && window.adsbygoogle !== undefined);
     scheduleOnce('afterRender', () => {
       (window.adsbygoogle || []).push({});
     });

@@ -7,13 +7,25 @@ import config from './config/environment';
 const RouterInstance = Router.extend({
   location: config.locationType,
   rootURL: config.rootURL,
+
+  fastboot: service(),
   metrics: service(),
   headData: service(),
 
   didTransition() {
     this._super(...arguments);
     scheduleOnce('afterRender', this, () => {
-      get(this, 'headData').set('url', `${window.location.protocol}//${window.location.host}${get(this, 'url')}`);
+      let url;
+      if (get(this, 'fastboot.isFastBoot') === true) {
+        const protocol = get(this, 'fastboot.request.protocol');
+        const host = get(this, 'fastboot.request.host');
+        url = `${protocol}://${host}${get(this, 'url')}`;
+      } else {
+        const protocol = window.location.protocol;
+        const host = window.location.host;
+        url = `${protocol}//${host}${get(this, 'url')}`;
+      }
+      get(this, 'headData').set('url', url);
       const page = get(this, 'url');
       const title = get(this, 'currentRouteName') || 'Unknown';
       get(this, 'metrics').trackPage({ page, title });

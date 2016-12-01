@@ -5,6 +5,7 @@ import service from 'ember-service/inject';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
 export default Route.extend(ApplicationRouteMixin, {
+  fastboot: service(),
   i18n: service(),
   headData: service(),
   metrics: service(),
@@ -21,6 +22,13 @@ export default Route.extend(ApplicationRouteMixin, {
   },
 
   headTags() {
+    let host;
+    if (get(this, 'fastboot.isFastBoot') === true) {
+      host = `${get(this, 'fastboot.request.protocol')}://${get(this, 'fastboot.request.host')}`;
+    } else {
+      host = `${window.location.protocol}//${window.location.host}`;
+    }
+    // TODO @Josh -- Base site description
     const desc = 'TODO @Josh: Kitsu Default Description';
     return [{
       type: 'meta',
@@ -48,7 +56,7 @@ export default Route.extend(ApplicationRouteMixin, {
       tagId: 'meta-og-image',
       attrs: {
         property: 'og:image',
-        content: `${window.location.protocol}//${window.location.host}/kitsu-256.png`
+        content: `${host}/kitsu-256.png`
       }
     }, {
       type: 'meta',
@@ -62,7 +70,7 @@ export default Route.extend(ApplicationRouteMixin, {
       tagId: 'meta-twitter-image',
       attrs: {
         name: 'twitter:image',
-        content: `${window.location.protocol}//${window.location.host}/kitsu-256.png`,
+        content: `${host}/kitsu-256.png`,
       }
     }];
   },

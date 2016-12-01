@@ -128,11 +128,6 @@ export default Component.extend({
     return [group, activity];
   },
 
-  init() {
-    this._super(...arguments);
-    set(this, 'originalTitle', window.document.title);
-  },
-
   didReceiveAttrs() {
     this._super(...arguments);
 
@@ -159,6 +154,11 @@ export default Component.extend({
       // stream analytics
       this._trackImpressions(data);
     }).catch(() => {});
+  },
+
+  didInsertElement() {
+    this._super(...arguments);
+    set(this, 'originalTitle', window.document.title);
   },
 
   willDestroyElement() {
