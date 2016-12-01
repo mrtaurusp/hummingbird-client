@@ -23,7 +23,7 @@ module.exports = function(environment) {
 
     // fastboot
     fastboot: {
-      hostWhitelist: ['kitsu.io', 'staging.kitsu.io', /^localhost:\d+$/]
+      hostWhitelist: ['kitsu.io', 'staging.kitsu.io', 'kitsu-web-staging.herokuapp.com', /^localhost:\d+$/]
     },
 
     // ember-simple-auth
